@@ -17,10 +17,18 @@ class hash_function
 {
 public:
 
+    const int mod = 37;
+
     unsigned int operator()( const string& s )  const {
-        
-        
-        // Complete definition
+        int key = 0;
+        int pow = 1;
+
+        for(int i = 0; i < s.size();i++){
+            key += (s[i] - 'a') * pow;
+            pow *= mod;
+        }
+
+        return key;
         
     }
 };
@@ -37,7 +45,8 @@ public:
 
 class Dictionary: public HashSet<string, hash_function, equality> {
 
-    // Complete definition
+
+
 public:
 	Dictionary(string filename);
 
