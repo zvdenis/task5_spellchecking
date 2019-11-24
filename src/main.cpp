@@ -28,7 +28,7 @@ void generateInserting(set<string> &totest, string origin);
 
 void removeNonWords(set<string> &totest, Dictionary &dict);
 
-void printMistake(string& word, set<string>& answer, int line);
+void printMistake(string &word, set<string> &answer, int line);
 
 // program arguments to run, example: main.exe ../../res/wordlist.txt ../../res/test.txt
 int main(int argc, char *argv[]) {
@@ -64,7 +64,7 @@ void checkSpelling(ifstream &in, Dictionary &dict) {
 
     while (in) {
         line_number++;
-        set<string> totest;
+
         string line;
         getline(in, line);
 
@@ -73,12 +73,12 @@ void checkSpelling(ifstream &in, Dictionary &dict) {
 
         string word;
         while (ss >> word) {
-
+            set<string> totest;
             // TODO: Complete the spell check of each word
-            stripPunct(word);
+            word = stripPunct(word);
             lower(word);
 
-            if(dict.search(word))
+            if (dict.search(word))
                 continue;
 
             generateTransposing(totest, word);
@@ -95,13 +95,13 @@ void checkSpelling(ifstream &in, Dictionary &dict) {
 
 void generateTransposing(set<string> &totest, string origin) {
 
-    for (int i = 0; i < origin.size(); i++)
-        for (int j = i; j < origin.size(); j++) {
-            string newWord = origin;
-            newWord[i] = origin[j];
-            newWord[j] = origin[i];
-            totest.insert(newWord);
-        }
+    for (int i = 0; i < origin.size() - 1; i++) {
+        int j = i + 1;
+        string newWord = origin;
+        newWord[i] = origin[j];
+        newWord[j] = origin[i];
+        totest.insert(newWord);
+    }
 }
 
 void generateRemoval(set<string> &totest, string origin) {
@@ -139,7 +139,7 @@ void generateInserting(set<string> &totest, string origin) {
 void removeNonWords(set<string> &totest, Dictionary &dict) {
 
     for (auto i = totest.begin(); i != totest.end();) {
-        if(!dict.search(*i)){
+        if (!dict.search(*i)) {
             totest.erase(i++);
             continue;
         }
@@ -148,16 +148,16 @@ void removeNonWords(set<string> &totest, Dictionary &dict) {
 
 }
 
-void printMistake(string& word, set<string>& answer, int line){
+void printMistake(string &word, set<string> &answer, int line) {
 
     cout << "mistake in word " << word << "  Line number: " << line << endl;
     cout << "Possible corrections: " << endl;
 
-    for(auto i = answer.begin();i != answer.end();i++){
+    for (auto i = answer.begin(); i != answer.end(); i++) {
         cout << *i << endl;
     }
 
-    cout << "\n\n\n";
+    cout << "\n\n";
 }
 
 void lower(string &s) {
@@ -172,12 +172,8 @@ string stripPunct(const string &s) {
 
     // Remove any single trailing
     // punctuation character from a word.
-    cout << "{" << s.size() << "}";
-
-    int pos = s.size() - 1;
-
-    if (ispunct(s[pos])) {
-        return s.substr(0, pos);
+    if (ispunct(s[s.length() - 1])) {
+        return s.substr(0, s.length() - 1);
     } else {
         return s;
     }
