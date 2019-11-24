@@ -74,7 +74,7 @@ void checkSpelling(ifstream &in, Dictionary &dict) {
         string word;
         while (ss >> word) {
             set<string> totest;
-            // TODO: Complete the spell check of each word
+
             word = stripPunct(word);
             lower(word);
 
@@ -157,7 +157,7 @@ void printMistake(string &word, set<string> &answer, int line) {
         cout << *i << endl;
     }
 
-    cout << "\n\n";
+    cout << "\n";
 }
 
 void lower(string &s) {
